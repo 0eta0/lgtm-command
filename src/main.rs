@@ -26,7 +26,7 @@ fn main() {
 
     if "get" == args[1] {
         let idx: u32 = args[2].parse().unwrap();
-        cmd_get(idx, links);
+        cmd_get(idx - 1, links);
         return;
     };
 }
@@ -57,7 +57,9 @@ fn cmd_get(idx: u32, links: ObjectMap) {
 
     if let Some(url) = indexes(links).get(idx as usize) {
         clip(url);
+        return;
     }
+    println!("Invalid number! No available image found!");
 }
 
 fn indexes(links: ObjectMap) -> Vec<String> {
