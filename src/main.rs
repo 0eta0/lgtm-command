@@ -14,7 +14,7 @@ fn main() {
     };
     let args: Vec<String> = env::args().collect();
 
-    if args.iter().count() > 0 {
+    if args.iter().count() < 2 {
         println!("\n===== PARAMs =====\n\nlist        => return index of image\nget number  => return markdown styled image url\n");
         return;
     };
@@ -47,7 +47,7 @@ async fn get_list() -> Result<ObjectMap, Error> {
 }
 
 fn cmd_list(links: ObjectMap) {
-    println!("aiueo");
+
     for (index, map) in links.iter().enumerate() {
         println!("{} => {}", index + 1, map.0);
     }
