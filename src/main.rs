@@ -1,8 +1,12 @@
-use std::env;
 use reqwest;
+
 use clipboard::ClipboardProvider;
 use clipboard::ClipboardContext;
+
+use std::env;
 use std::result::Result;
+use rand::Rng;
+
 type ObjectMap = serde_json::Map<std::string::String, serde_json::Value>;
 type Error = Box<dyn std::error::Error>;
 
@@ -15,7 +19,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     if args.iter().count() < 2 {
-        println!("\n===== PARAMs =====\n\nlist        => return index of image\nget number  => return markdown styled image url\n");
+        println!("\n===== PARAMs =====\n\nlist        => return index of image\nget         => return markdown styled image url randomly\nget number  => return markdown styled image url\n");
         return;
     };
 
@@ -25,8 +29,14 @@ fn main() {
     };
 
     if "get" == args[1] {
-        let idx: u32 = args[2].parse().unwrap();
-        cmd_get(idx - 1, links);
+        let mut idx: u32 = 0;
+        if args.iter().count() < 3 {
+            idx = match args[2].parse::<u32>() {
+                Ok(val) => val,
+                Err(_) => 0
+            };
+        };
+        cmd_get(idx, links);
         return;
     };
 }
@@ -55,7 +65,13 @@ fn cmd_list(links: ObjectMap) {
 
 fn cmd_get(idx: u32, links: ObjectMap) {
 
-    if let Some(url) = indexes(links).get(idx as usize) {
+    let idxs: Vec<String> = indexes(links);
+    let rnd: i32 = rand::thread_rng().gen_range(1, idxs.iter().count() as i32);
+    let idx: usize = match idx {
+        0 => (rnd - 1) as usize,
+        _ => (idx - 1) as usize
+    };
+    if let Some(url) = idxs.get(idx) {
         clip(url);
         return;
     }
