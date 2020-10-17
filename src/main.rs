@@ -45,7 +45,7 @@ fn main() {
 async fn get_list() -> Result<ObjectMap, Error> {
 
     let client = reqwest::Client::new();
-    let url = "https://gist.githubusercontent.com/0eta0/fc2130c0e0c756712e085e0287ec5908/raw/a176b9cd340b18e74cf5eef66f1b5116bcc5d627/images.json";
+    let url = "https://gist.githubusercontent.com/0eta0/fc2130c0e0c756712e085e0287ec5908/raw/";
     let body = client.get(url)
         .send()
         .await?
