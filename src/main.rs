@@ -30,7 +30,7 @@ fn main() {
 
     if "get" == args[1] {
         let mut idx: u32 = 0;
-        if args.iter().count() < 3 {
+        if args.iter().count() > 2 {
             idx = match args[2].parse::<u32>() {
                 Ok(val) => val,
                 Err(_) => 0
@@ -66,9 +66,9 @@ fn cmd_list(links: ObjectMap) {
 fn cmd_get(idx: u32, links: ObjectMap) {
 
     let idxs: Vec<String> = indexes(links);
-    let rnd: i32 = rand::thread_rng().gen_range(1, idxs.iter().count() as i32);
+    let rnd: i32 = rand::thread_rng().gen_range(0, idxs.iter().count() as i32);
     let idx: usize = match idx {
-        0 => (rnd - 1) as usize,
+        0 => rnd as usize,
         _ => (idx - 1) as usize
     };
     if let Some(url) = idxs.get(idx) {
